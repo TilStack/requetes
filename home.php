@@ -14,13 +14,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Shop Homepage - Start Bootstrap Template</title>
+        <title>E-commerce</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="./assets/favicon.ico" />
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="./css/styles.css" rel="stylesheet" />
+        <!-- Google Font: Source Sans Pro -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="dist/css/adminlte.min.css">
     </head>
     <body>
         <!-- Navigation-->
@@ -55,7 +61,7 @@
             </div>
         </header>
         <!-- Section-->
-        <section class="py-5">
+        <section class="py-5">            
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                     <?php
@@ -72,12 +78,12 @@
                         
                                 <div class="card h-100">
                                     <!-- Product image-->
-                                    <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                                    <a href="./productdetail.php?page=product_detail&id='.$rec[$i]->id.'" class="lien"><img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /></a>                                    
                                     <!-- Product details-->
                                     <div class="card-body p-4">
                                         <div class="text-center">
                                             <!-- Product name-->
-                                            <h5 class="fw-bolder">'.$rec[$i]->nom.'</h5>
+                                            <a href="./productdetail.php?page=product_detail&id='.$rec[$i]->id.'"><h5 class="fw-bolder">'.$rec[$i]->nom.'</h5></a>
                                             <!-- Product price-->
                                             '.$rec[$i]->prix.'XAF
                                         </div>
@@ -88,7 +94,7 @@
                                     </div>
                                 </div>
                             </div>
-                                ');
+                            ');
                             }
                         ?>
                 </div>
@@ -102,5 +108,22 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
+        <script src="plugins/jquery/jquery.min.js"></script>
+        <!-- Bootstrap 4 -->
+        <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="dist/js/adminlte.min.js"></script>
+        <!-- AdminLTE for demo purposes -->
+        <script src="dist/js/demo.js"></script>
+        <script>
+        $(document).ready(function() {
+            $('.product-image-thumb').on('click', function () {
+            var $image_element = $(this).find('img')
+            $('.product-image').prop('src', $image_element.attr('src'))
+            $('.product-image-thumb.active').removeClass('active')
+            $(this).addClass('active')
+            })
+        })
+        </script>
     </body>
 </html>
