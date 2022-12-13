@@ -12,14 +12,22 @@
         $password = $_POST['password'];
         $ads = $db->query('SELECT * from client where email = "'.$login.'" and password = "'.$password.'"')->fetchAll(PDO::FETCH_OBJ);
         $size3 = sizeof($ads);
-        if($size3 == 1){
+		$admin = $db->query('SELECT * from client where email = "'.'admin@gmail.com'.'" and password = "'.'admin'.'"')->fetchAll(PDO::FETCH_OBJ);
+        $size = sizeof($admin);
+        if($size == 1){
             $_SESSION["active"] = true;
                 $_SESSION["email"] = $ads[0]->login;
                 $_SESSION["userId"] = null;
-                header("Location:home.php");
+                header("Location:homeAdmin.php");
                 //exit();
-        }else{
-			$_SESSION["active"] = false;
+        }elseif($size3 == 1){
+			$_SESSION["active"] = true;
+                $_SESSION["email"] = $ads[0]->login;
+                $_SESSION["userId"] = null;
+                header("Location:home.php");
+                //exit(); 
+		}else{
+			$_SESSION["active"] = true;
 		}
     }
 
