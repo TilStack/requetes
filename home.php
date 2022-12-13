@@ -59,8 +59,13 @@
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                     <?php
+                     include_once './database.php';
+                     $database = new Database();
+                     $db = $database->getConnection();
+                       $rec = $db->query("SELECT * FROM produit ")->fetchAll(PDO::FETCH_OBJ);
+                     $totals = sizeof($rec);
                     $name="Drystan";
-                            for($i = 0; $i <8; $i++ )
+                            for($i = 0; $i <$totals; $i++ )
                             {
                                 echo('
                                 <div class="col mb-5">
@@ -72,9 +77,9 @@
                                     <div class="card-body p-4">
                                         <div class="text-center">
                                             <!-- Product name-->
-                                            <h5 class="fw-bolder">'.$name.'</h5>
+                                            <h5 class="fw-bolder">'.$rec[$i]->nom.'</h5>
                                             <!-- Product price-->
-                                            $40.00 - $80.00
+                                            '.$rec[$i]->prix.'XAF
                                         </div>
                                     </div>
                                     <!-- Product actions-->

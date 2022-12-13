@@ -10,24 +10,34 @@
         if (isset($_POST['btnSave'])) {
         $login = $_POST['login'];
         $password = $_POST['password'];
-        $ads = $db->query('SELECT * from client where email = "'.$login.'" and password = "'.$password.'"')->fetchAll(PDO::FETCH_OBJ);
-        $size3 = sizeof($ads);
+        $client = $db->query('SELECT * from client where email = "'.$login.'" and password = "'.$password.'"')->fetchAll(PDO::FETCH_OBJ);
+        $size3 = sizeof($client);
 		$admin = $db->query('SELECT * from client where email = "'.'admin@gmail.com'.'" and password = "'.'admin'.'"')->fetchAll(PDO::FETCH_OBJ);
         $size = sizeof($admin);
+		$vendeur = $db->query('SELECT * from vendeur where email = "'.$login.'" and password = "'.$password.'"')->fetchAll(PDO::FETCH_OBJ);
+        $size2 = sizeof($vendeur);
         if($size == 1){
             $_SESSION["active"] = true;
-                $_SESSION["email"] = $ads[0]->login;
-                $_SESSION["userId"] = null;
+                $_SESSION["email"] = $client[0]->login;
+                $_SESSION["userId"] = "c9";
+				$_SESSION["type"]="administrator"
                 header("Location:homeAdmin.php");
                 //exit();
         }elseif($size3 == 1){
 			$_SESSION["active"] = true;
-                $_SESSION["email"] = $ads[0]->login;
+                $_SESSION["email"] = $client[0]->login;
                 $_SESSION["userId"] = null;
+				$_SESSION["type"]="client";
                 header("Location:home.php");
                 //exit(); 
-		}else{
+		}elseif($size2 == 1){
 			$_SESSION["active"] = true;
+                $_SESSION["email"] = $vendeur[0]->login;
+                $_SESSION["userId"] = null;
+				$_SESSION["type"]="vendeur";
+                header("Location:homeAdmin.php");
+		}else{
+			$_SESSION["active"]=false;
 		}
     }
 
