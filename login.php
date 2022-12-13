@@ -85,7 +85,7 @@
 						<span class="txt1">
 							Forgot
 						</span>
-						<a class="txt2" href="#">
+						<a class="txt2" href="./forgotpassword.php">
 							Username / Password?
 						</a>
 					</div>
