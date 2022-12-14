@@ -10,35 +10,30 @@
         if (isset($_POST['btnSave'])) {
         $login = $_POST['login'];
         $password = $_POST['password'];
+		$admin;
+		
         $client = $db->query('SELECT * from client where email = "'.$login.'" and password = "'.$password.'"')->fetchAll(PDO::FETCH_OBJ);
         $size3 = sizeof($client);
-		$admin = $db->query('SELECT * from client where email = "'.'admin@gmail.com'.'" and password = "'.'admin'.'"')->fetchAll(PDO::FETCH_OBJ);
-        $size = sizeof($admin);
-		$vendeur = $db->query('SELECT * from vendeur where email = "'.$login.'" and password = "'.$password.'"')->fetchAll(PDO::FETCH_OBJ);
-        $size2 = sizeof($vendeur);
-        if($size == 1){
-            $_SESSION["active"] = true;
-                $_SESSION["email"] = $client[0]->login;
-                $_SESSION["userId"] = "c9";
-				$_SESSION["type"]="administrator"
-                header("Location:homeAdmin.php");
-                //exit();
-        }elseif($size3 == 1){
-			$_SESSION["active"] = true;
-                $_SESSION["email"] = $client[0]->login;
-                $_SESSION["userId"] = null;
-				$_SESSION["type"]="client";
-                header("Location:home.php");
-                //exit(); 
-		}elseif($size2 == 1){
-			$_SESSION["active"] = true;
-                $_SESSION["email"] = $vendeur[0]->login;
-                $_SESSION["userId"] = null;
-				$_SESSION["type"]="vendeur";
-                header("Location:homeAdmin.php");
-		}else{
-			$_SESSION["active"]=false;
-		}
+		if($size3 > 0){
+			if($client[0]->email=="admin@admin.com"){
+				$_SESSION["active"] = true;
+				$_SESSION["email"] = $client[0]->email;
+				$_SESSION["userId"] = $client[0]->Id;	
+				$_SESSION["type"] = "administrateur";			
+				echo("<script>alert('Connexion reusie');</script>");
+				header("Location: ./homeAdmin.php?idadmin=".$client[0]->Id);
+				exit();
+			}else{
+				$_SESSION["active"] = true;
+				$_SESSION["email"] = $client[0]->email;
+				$_SESSION["userId"] = $client[0]->Id;
+				$_SESSION["type"] = "client";				
+				echo("<script>alert('Connexion reusie');</script>");
+				header("Location: ./home.php?idclient=".$client[0]->Id);
+				exit();
+			}                     
+    	}else{echo("<script>alert('Echec');</script>");
+            $_SESSION["active"] = false;}
     }
 
 ?>
@@ -94,7 +89,7 @@
 					</div>
 					
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn" type="submit"  name="btnSave">
+						<button class="login100-form-btn" type="submit" value="login" name="btnSave">
 							Login
 						</button>
 					</div>

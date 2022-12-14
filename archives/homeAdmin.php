@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+        session_start();
+        include_once './database.php';
+        $_SESSION["active"] = false;
+        $database = new Database();
+        $db = $database->getConnection();
+?>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,6 +20,10 @@
   <link rel="stylesheet" href="./plugins/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700"
+    />
 </head>
 <!--
 `body` tag options:
@@ -75,7 +86,7 @@
           <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+        <a href="#" class="d-block">Administrator</a>
         </div>
       </div>
 
@@ -111,19 +122,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./ajoutproduit.php" class="nav-link">
+                <a href="homeAdmin.php?page=produit" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Ajout produit</p>
+                  <p>produit</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./listproduit.php" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>List produit</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="./listproduitvendu.php" class="nav-link">
+                <a href="homeAdmin.php?page=listproduitvendu" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Produit Vendus</p>
                 </a>
@@ -141,27 +146,81 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./ajoutclient.php" class="nav-link">
+                <a href="homeAdmin.php?page=ajoutclient" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Ajouter Clients</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./listclient.php" class="nav-link">
+                <a href="homeAdmin.php?page=listclient" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>List Clients</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="./listclientacheter.php" class="nav-link">
+                <a href="homeAdmin.php?page=listclientacheter" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Client ayant acheté un produit</p>
                 </a>
               </li>
             </ul>
           </li>
+          <li class="nav-header">Vendeurs</li>
           <li class="nav-item">
             <a href="#" class="nav-link">
+              <i class="nav-icon far fa-envelope"></i>
+              <p>
+                vendeurs
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="homeAdmin.php?page=ajoutvendeur" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ajouter vendeur</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="homeAdmin.php?page=listvendeur" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>List vendeur</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="homeAdmin.php?page=listvendeurvendu" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Client ayant vendu un produit</p>
+                </a>
+              </li>
+            </ul>
+          </li>          
+          <li class="nav-header">Other</li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon far fa-envelope"></i>
+              <p>
+                Profile
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="homeAdmin.php?page=editprofile" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Edit profile</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="homeAdmin.php?page=profile" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>View Profile</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="./login.php" class="nav-link">
               <i class="fas fa-circle nav-icon"></i>
               <p>Déconnexion</p>
             </a>
@@ -174,25 +233,14 @@
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-   
-  </div>
-  <!-- /.content-wrapper -->
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-
-  <!-- Main Footer -->
-  <footer class="main-footer">
-    <strong>Copyright &copy; 2021-2022 <a href="#">Camarous call</a>.</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 1.1.0
-    </div>
-  </footer>
+  <?php
+      @$page="./".$_GET["page"];
+      if($page!="./")
+      $page =$page.".php";
+      else
+      $page="./dashboard.php";
+      include_once($page);
+  ?>
 </div>
 <!-- ./wrapper -->
 
@@ -211,5 +259,16 @@
 <script src="dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard3.js"></script>
+<script src="./assets/js/jquery-3.3.1.min.js"></script>
+    <!-- https://jquery.com/download/ -->
+    <script src="./assets/js/bootstrap.min.js"></script>
+    <!-- https://getbootstrap.com/ -->
+    <script>
+      $(function() {
+        $(".tm-product-name").on("click", function() {
+          window.location.href = "edit-product.html";
+        });
+      });
+    </script>
 </body>
 </html>

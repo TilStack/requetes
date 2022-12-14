@@ -6,7 +6,18 @@
         $_SESSION["active"] = false;
         $database = new Database();
         $db = $database->getConnection();
-
+        $clientId=$_GET['idclient'];
+        $value = $db->query("SELECT * FROM client where Id=".$clientId)->fetchAll(PDO::FETCH_OBJ);
+        $sizeclient=sizeof($value);
+        
+        if($sizeclient>0){
+            $_SESSION["active"] = true;
+            $nameClient=$value[0]->nom;
+            $rec = $db->query("SELECT * FROM produit ")->fetchAll(PDO::FETCH_OBJ);
+            $totals = sizeof($rec);
+        }else{
+            $_SESSION["active"] = false;
+        }
         
     ?>
     <head>
@@ -38,7 +49,8 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Home</a></li>
                         <li class="nav-item"><a class="nav-link" aria-current="page" href="./monpannier.php">Mon pannier</a></li>
-                        <li class="nav-item"><a class="nav-link" aria-current="page" href="./login.php">Déconnexion</a></li>
+                        <li class="nav-item"><a class="nav-link" aria-current="page" href="#">profile</a></li>
+                        <li class="nav-item"><a class="nav-link"  href="./login.php">Déconnexion</a></li>
                     </ul>
                     
                     <form class="d-flex">
@@ -47,6 +59,11 @@
                             Cart
                             <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
                         </button>
+                        <?php
+                            echo('
+                                <h3>   '.$nameClient.'</h3>
+                            ');
+                        ?>
                     </form>
                 </div>
             </div>
@@ -64,33 +81,37 @@
         <section class="py-5">            
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    <?php
-                     include_once './database.php';
-                     $database = new Database();
-                     $db = $database->getConnection();
-                       $rec = $db->query("SELECT * FROM produit ")->fetchAll(PDO::FETCH_OBJ);
-                     $totals = sizeof($rec);
-                    $name="Drystan";
-                            for($i = 0; $i <$totals; $i++ )
+                    <?php        
+                        for($i = 0; $i <$totals; $i++ )
                             {
                                 echo('
                                 <div class="col mb-5">
                         
                                 <div class="card h-100">
                                     <!-- Product image-->
-                                    <a href="./productdetail.php?page=product_detail&id='.$rec[$i]->id.'" class="lien"><img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /></a>                                    
+                                    <a href="./productdetail.php?idclient='.$clientId.'&idproduit='.$rec[$i]->id.'&idvendeur='.$rec[$i]->vendeur.'" class="lien"><img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /></a>                                    
                                     <!-- Product details-->
                                     <div class="card-body p-4">
                                         <div class="text-center">
                                             <!-- Product name-->
-                                            <a href="./productdetail.php?page=product_detail&id='.$rec[$i]->id.'"><h5 class="fw-bolder">'.$rec[$i]->nom.'</h5></a>
+                                            <a href="./productdetail.php?idclient='.$clientId.'&idproduit='.$rec[$i]->id.'&idvendeur='.$rec[$i]->vendeur.'"><h5 class="fw-bolder">'.$rec[$i]->nom.'</h5></a>
                                             <!-- Product price-->
                                             '.$rec[$i]->prix.'XAF
                                         </div>
-                                    </div>
+                                        <div class="text-center">                                           
+                                            Quantity
+                                        </div>
+                                        <div class="text-center">
+                                            <input class="input100" type="number" name="number" placeholder="number">
+                                        </div>
+                                    </div>                                                  
                                     <!-- Product actions-->
                                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to card</a></div>
+                                        <center>
+                                            <div class="card-footer">
+                                                <button type="submit" class="btn btn-primary">Add to Card</button>
+                                            </div>
+                                        </center>                                       
                                     </div>
                                 </div>
                             </div>
