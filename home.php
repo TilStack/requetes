@@ -84,12 +84,13 @@
                     <?php        
                         for($i = 0; $i <$totals; $i++ )
                             {
+                                $image=base64_encode($rec[$i]->image);
                                 echo('
                                 <div class="col mb-5">
                         
                                 <div class="card h-100">
                                     <!-- Product image-->
-                                    <a href="./productdetail.php?idclient='.$clientId.'&idproduit='.$rec[$i]->id.'&idvendeur='.$rec[$i]->vendeur.'" class="lien"><img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." /></a>                                    
+                                    <center><a href="./productdetail.php?idclient='.$clientId.'&idproduit='.$rec[$i]->id.'&idvendeur='.$rec[$i]->vendeur.'" class="lien"><img class="card-img-top" src="data:image/jpg;charset=utf8;base64,'.$image.'"style="width: 200px; height: 200px; border-radius: 10px; margin-top:10px" alt="..." /></a>     </center>                               
                                     <!-- Product details-->
                                     <div class="card-body p-4">
                                         <div class="text-center">

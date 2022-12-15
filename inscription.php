@@ -1,5 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+      session_start();
+     include_once './database.php';
+     $database = new Database();
+     $db = $database->getConnection();
+     if (isset($_POST['btnsave'])) {	
+      $fname= $_POST['nom'];
+      $lname= $_POST['prenom'];
+      $pnumber= $_POST['phone'];
+      $email= $_POST['email'];
+      $password= $_POST['pass'];
+	  $localisation=$_POST['ville'];
+	  $client = $db->query('SELECT * from client')->fetchAll(PDO::FETCH_OBJ);
+      $size3 = sizeof($client);
+	  $q="INSERT INTO client (Id, nom, prenom, telephone, localisation, email, password) VALUES ($size3+1, '$fname', '$lname', '$pnumber', '$localisation', '$email', '$password')";
+      $db->exec($q);  
+	  echo('Good');
+	  $client2 = $db->query('SELECT * from client where email = "'.$email.'" and password = "'.$password.'"')->fetchAll(PDO::FETCH_OBJ);
+	  $size1 = sizeof($client2);
+      if($size1 > 0){
+		if($client[0]->email=="admin@admin.com"){
+			$_SESSION["active"] = true;
+			$_SESSION["email"] = $client2[0]->email;
+			$_SESSION["userId"] = $client2[0]->Id;	
+			$_SESSION["type"] = "administrateur";			
+			echo("<script>alert('Connexion reusie');</script>");
+			header("Location: ./homeAdmin.php?idadmin=".$client2[0]->Id);
+			exit();
+		}else{
+			$_SESSION["active"] = true;
+			$_SESSION["email"] = $client2[0]->email;
+			$_SESSION["userId"] = $client2[0]->Id;
+			$_SESSION["type"] = "client";				
+			echo("<script>alert('Connexion reusie');</script>");
+			header("Location: ./home.php?idclient=".$client2[0]->Id);
+			exit();
+		}                     
+		}else{echo("<script>alert('Echec');</script>");
+			$_SESSION["active"] = false;}
+      }
+    ?>
 <head>
 	<title>Inscription</title>
 	<meta charset="UTF-8">
@@ -34,7 +75,20 @@
 					<span class="login100-form-title">
 						Member Inscription
 					</span>
-
+					<div class="wrap-input100 validate-input">
+						<input class="input100" type="text" name="nom" placeholder="Nom">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-envelope" aria-hidden="true"></i>
+						</span>
+					</div>
+					<div class="wrap-input100 validate-input" >
+						<input class="input100" type="text" name="prenom" placeholder="Prenom">
+						<span class="focus-input100"></span>
+						<span class="symbol-input100">
+							<i class="fa fa-envelope" aria-hidden="true"></i>
+						</span>
+					</div>
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
 						<input class="input100" type="text" name="email" placeholder="Email">
 						<span class="focus-input100"></span>
@@ -67,7 +121,7 @@
 					</div>
 					
 					<div class="container-login100-form-btn">
-						<button class="login100-form-btn">
+						<button class="login100-form-btn" name="btnsave">
 							Create
 						</button>
 					</div>

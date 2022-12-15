@@ -1,47 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-  
-    <?php 
-    session_start();
-    include_once './database.php';
-    $_SESSION["active"] = false;
-    $database = new Database();
-    $db = $database->getConnection();
-
-    if (isset($_POST['btnsave'])) {	
-      $nom = $_POST["nom"];
-      $prix = $_POST["prix"];
-      $quantite = $_POST["stock"];
-      $description = $_POST["description"];
-	  $product = $db->query('SELECT * from produit')->fetchAll(PDO::FETCH_OBJ);
-        $size = sizeof($product);
-        $q="INSERT INTO produit (nom,prix, quantite_stock, description,image, id, categorie, vendeur) VALUES ('$nom', '$prix', '$quantite', '$description','', $size+1, 2, 2)";
-        $db->exec($q); 
-        echo('good');
-      }
-
-    // if(isset($_POST["btnsave"])){ 
-
-    //   $nom = $_POST["nom"];
-    //   $prix = $_POST["prix"];
-    //   $quantite = $_POST["stock"];
-    //   $description = $_POST["description"];
-    //   if ( isset($_FILES['image']) )
-    //   {
-    //     $img_blob = file_get_contents ($_FILES['image']['tmp_name']);      
-
-    //     $product = $db->query('SELECT * from produit')->fetchAll(PDO::FETCH_OBJ);
-    //     $size = sizeof($product);
-    //     $q="INSERT INTO produit (nom,prix, quantite_stock, description,image, id, categorie, vendeur) VALUES ('$nom', '$prix', '$quantite', '$description','', $size+1, 2, 2)";
-    //     $db->exec($q); 
-    //     echo('good');  
-    //   }else{
-    //     echo('Echec');
-    //   }
-    // }
-      
-    ?>
-
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -143,20 +101,20 @@
           <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
             <div class="row">
               <div class="col-12">
-                <h2 class="tm-block-title d-inline-block">Add Product</h2>
+                <h2 class="tm-block-title d-inline-block">Add Categorie</h2>
               </div>
             </div>
             <div class="row tm-edit-product-row">
               <div class="col-xl-6 col-lg-6 col-md-12">
-                <form action="" class="tm-edit-product-form" method="POST">
+                <form action="" class="tm-edit-product-form">
                   <div class="form-group mb-3">
                     <label
                       for="name"
-                      >Product Name
+                      >Categorie Name
                     </label>
                     <input
                       id="name"
-                      name="nom"
+                      name="name"
                       type="text"
                       class="form-control validate"
                       required
@@ -165,75 +123,35 @@
                   <div class="form-group mb-3">
                     <label
                       for="description"
-                      >Description</label
+                      >Categorie Description</label
                     >
                     <textarea
                       class="form-control validate"
                       rows="3"
-                      name="description"
                       required
                     ></textarea>
-                  </div>
-                  <div class="form-group mb-3">
-                    <label
-                      for="category"
-                      >Category</label
-                    >
-                    <select
-                      class="custom-select tm-select-accounts"
-                      id="category"
-                    >
-                      <option selected>Select category</option>
-                      <?php
-                          include_once './database.php';
-                          $database = new Database();
-                          $db = $database->getConnection();
-                          $rec = $db->query("SELECT * FROM categorie ")->fetchAll(PDO::FETCH_OBJ);
-                              foreach ($rec as $item) {
-                                  echo('<option  value="'.$item->Id.'" >'.$item->nom_categorie.'</option>');
-                              }
-                      ?>   
-                    </select>
-                  </div>
-                  <div class="row">
-                      <div class="form-group mb-3 col-xs-12 col-sm-6">
-                          <label
-                            for="expire_date"
-                            >Solde
-                          </label>
-                          <input
-                            id="expire_date"
-                            name="prix"
-                            type="text"
-                            class="form-control validate"
-                            data-large-mode="true"
-                          />
-                        </div>
-                        <div class="form-group mb-3 col-xs-12 col-sm-6">
-                          <label
-                            for="stock"
-                            >Stock
-                          </label>
-                          <input
-                            id="stock"
-                            name="stock"
-                            type="text"
-                            class="form-control validate"
-                            required
-                          />
-                        </div>
-
-                  </div>
+                  </div> 
                   
               </div>
               <div class="col-xl-6 col-lg-6 col-md-12 mx-auto mb-4">
-                
                 <div class="tm-product-img-dummy mx-auto">
-                 <input type="file" name="image" size=50 />
-                </div>                              
+                  <i
+                    class="fas fa-cloud-upload-alt tm-upload-icon"
+                    onclick="document.getElementById('fileInput').click();"
+                  ></i>
+                </div>
+                <div class="custom-file mt-3 mb-3">
+                  <input id="fileInput" type="file" style="display:none;" />
+                  <input
+                    type="button"
+                    class="btn btn-primary btn-block mx-auto"
+                    value="UPLOAD CATEGORIE IMAGE"
+                    onclick="document.getElementById('fileInput').click();"
+                  />
+                </div>
               </div>
               <div class="col-12">
-                <button type="submit" class="btn btn-primary btn-block text-uppercase" name="btnsave">Add Product Now</button>
+                <button type="submit" class="btn btn-primary btn-block text-uppercase">Add Categorie Now</button>
               </div>
             </form>
             </div>
@@ -264,6 +182,3 @@
     </script>
   </body>
 </html>
-
-
-

@@ -100,7 +100,7 @@
                 </div>
                 <div class="col-12 tm-block-col">
                     <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
-                        <h2 class="tm-block-title">Orders List</h2>
+                        <h2 class="tm-block-title">Clients List</h2>
                         <table class="table">
                             <thead>
                                 <tr>
@@ -116,7 +116,7 @@
                                 <?php
                                     $rec = $db->query("SELECT * FROM client ")->fetchAll(PDO::FETCH_OBJ);
                                     $clientsize = sizeof($rec);
-                                    for($z=0; $z<$clientsize;$i++){
+                                    for($z=0; $z<$clientsize;$z++){
                                         echo('
                                         <tr>
                                             <th scope="row"><b>'.$rec[$z]->Id.'</b></th>
